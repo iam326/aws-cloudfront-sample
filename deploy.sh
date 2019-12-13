@@ -19,3 +19,4 @@ aws cloudformation deploy \
   && :
 
 aws s3 cp ./src/index.html s3://${WEB_HOSTING_BUCKET_NAME}/index.html
+aws s3 cp ./src/error.html s3://${WEB_HOSTING_BUCKET_NAME}/error.html
