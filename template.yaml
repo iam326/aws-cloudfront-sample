@@ -56,6 +56,7 @@ Resources:
           CachedMethods:
             - GET
             - HEAD
+          Compress: 'true'
           TargetOriginId: S3Origin
           ForwardedValues:
             QueryString: 'false'
