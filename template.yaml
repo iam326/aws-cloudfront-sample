@@ -63,7 +63,7 @@ Resources:
             QueryString: 'false'
             Cookies:
               Forward: none
-          ViewerProtocolPolicy: allow-all
+          ViewerProtocolPolicy: redirect-to-https
         Restrictions:
           GeoRestriction:
             RestrictionType: whitelist
