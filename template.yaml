@@ -51,13 +51,11 @@ Resources:
         Comment: !Sub '${AWS::StackName} distribution'
         DefaultCacheBehavior:
           AllowedMethods:
-            - DELETE
             - GET
             - HEAD
-            - OPTIONS
-            - PATCH
-            - POST
-            - PUT
+          CachedMethods:
+            - GET
+            - HEAD
           TargetOriginId: S3Origin
           ForwardedValues:
             QueryString: 'false'
