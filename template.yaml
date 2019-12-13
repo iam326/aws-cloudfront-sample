@@ -57,6 +57,9 @@ Resources:
             - GET
             - HEAD
           Compress: 'true'
+          DefaultTTL: 3600
+          MaxTTL: 86400
+          MinTTL: 60
           TargetOriginId: S3Origin
           ForwardedValues:
             QueryString: 'false'
