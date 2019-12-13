@@ -76,3 +76,5 @@ Resources:
 Outputs:
   S3HostingURL:
     Value: !GetAtt WebHostingBucket.WebsiteURL
+  CloudFrontHostingURL:
+    Value: !Join ['', ['https://', !GetAtt CloudFrontDistribution.DomainName]]
