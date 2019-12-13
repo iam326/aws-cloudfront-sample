@@ -47,6 +47,7 @@ Resources:
             S3OriginConfig:
               OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
         Enabled: 'true'
+        HttpVersion: http2
         DefaultRootObject: index.html
         Comment: !Sub '${AWS::StackName} distribution'
         DefaultCacheBehavior:
