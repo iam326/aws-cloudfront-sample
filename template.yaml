@@ -25,11 +25,57 @@ Resources:
         Statement:
           - Sid: PublicReadForGetBucketObjects
             Effect: Allow
-            Principal: '*'
+            Principal:
+              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}'
             Action: 's3:GetObject'
             Resource: !Sub 'arn:aws:s3:::${WebHostingBucketName}/*'
       Bucket: !Ref WebHostingBucket
 
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Ref AWS::StackName
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Origins:
+          - DomainName: !Sub '${WebHostingBucketName}.s3.amazonaws.com'
+            Id: S3Origin
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
+        Enabled: 'true'
+        HttpVersion: http2
+        DefaultRootObject: index.html
+        Comment: !Sub '${AWS::StackName} distribution'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: 'true'
+          DefaultTTL: 3600
+          MaxTTL: 86400
+          MinTTL: 60
+          TargetOriginId: S3Origin
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+        Restrictions:
+          GeoRestriction:
+            RestrictionType: whitelist
+            Locations:
+              - JP
+        PriceClass: PriceClass_200
+
 Outputs:
-  WebsiteURL:
+  S3HostingURL:
     Value: !GetAtt WebHostingBucket.WebsiteURL
+  CloudFrontHostingURL:
+    Value: !Join ['', ['https://', !GetAtt CloudFrontDistribution.DomainName]]
